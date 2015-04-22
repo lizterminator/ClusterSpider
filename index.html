@@ -184,14 +184,14 @@
                             <div >
                                 <div id="" style="width: 100%;height:300px;; margin:0 auto;">
                                 <div class="row">
-                                  <div class="col-md-6 col-md-offset-2">
-                                    <ul class="p-info">
-                                        <li>
+                                  <!-- <div class="col-md-6 col-md-offset-2"> -->
+                                    <ul class="p-info col-lg-4">
+                                        <li >
                                             <div class="title">开启</div>
-                                            <div class="desk"><button id="startMachine" class="btn btn-default" >开启/关闭</button></div>
+                                            <div class="desk"><button id="startMachine" class="btn btn-default" >正在载入...</button></div>
                                         </li>
 
-                                          <div id="physics">
+                                          <div id="physics" >
                                           
                                        
                                           <!-- <li>
@@ -207,29 +207,19 @@
                                               <div class="" id="machine_disk">50%</div>
                                           </li> -->
                                          </div>
-                                    </ul>
 
-                                  </div>
+                                    </ul>
+                                    <ul class="p-info col-lg-8">
+                                      <li>
+                                        <div class="title">JVM信息</div>
+                                      </li>
+                                      <div id="jvm">
+                                        
+                                      </div>
+                                    </ul>
+                                  <!-- </div> -->
                                 </div>
                                 
-                                    <!-- <div class="row">
-                                        <div class="col-md-6">
-                                          开启：
-                                          <input type="checkbox" checked data-toggle="toggle" data-onstyle="success">
-                                        </div>
-                                        
-                                    </div>
-                                    <div class="row">
-                                      <div class="col-md-6">cpu: 10%</div>
-                                      
-                                      
-                                    </div>
-                                    <div class="row">
-                                      <div class="col-md-6">硬盘: 20% </div>
-                                    </div>
-                                    <div class="row">
-                                      <div class="col-md-6">内存: 20%</div>
-                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -283,18 +273,19 @@
                                    
                                 </div> -->
                                 <div class="form">
-                                <form class="cmxform form-horizontal adminex-form" id="signupForm" method="post" action="http://baidu.com">
+                                <form class="cmxform form-horizontal adminex-form" method="post"  action="http://192.168.2.133:8080/deploy.do" enctype="multipart/form-data" target="id_iframe">
                                     <div class="form-group ">
                                         <label for="war_pac" class="control-label col-lg-2">war包</label>
                                         <div class="col-lg-10">
-                                            <input class=" form-control" id="war_pac" name="war_pac" type="file" />
+                                            <input class=" form-control" id="war_pac" name="war" type="file" />
                                         </div>
                                     </div>
-                                    
+                                    <input type="text" value="" name="ip" class="hide" id="war_ip">
+                                    <input type="text" value="" name="port" class="hide" id="war_port">
 
                                     <div class="form-group">
                                         <div class="col-lg-offset-2 col-lg-10">
-                                            <button class="btn btn-primary" type="submit">部署</button>
+                                            <button class="btn btn-primary" type="submit" id="remoteDeploy">部署</button>
                                         </div>
                                     </div>
                                 </form>
@@ -315,20 +306,22 @@
                         </header>
                         <div class="panel-body">
                             <div class="form">
-                                <form class="cmxform form-horizontal adminex-form" id="signupForm" method="post" action="http://baidu.com">
+                                <form class="cmxform form-horizontal adminex-form" enctype="multipart/form-data" method="get" action="http://192.168.2.133:8080/deploy.do" target="id_iframe">
+                                    <div class="form-group ">
+                                        <label for="server_path" class="control-label col-lg-2">Path</label>
+                                        <div class="col-lg-10">
+                                            <input class=" form-control" id="server_path" name="path" type="text" placeholder="请注意在前面加上 '/' "/>
+                                        </div>
+                                    </div>
                                     <div class="form-group ">
                                         <label for="war_path" class="control-label col-lg-2">war路径</label>
                                         <div class="col-lg-10">
-                                            <input class=" form-control" id="war_path" name="war_path" type="text" placeholder="请填写server上的绝对路径 eg: '/server/tomcat' "/>
+                                            <input class=" form-control" id="war_path" name="uri" type="text" placeholder="请填写server上的绝对路径 eg: '/server/tomcat' "/>
                                         </div>
                                     </div>
-                                    <div class="form-group ">
-                                        <label for="server_path" class="control-label col-lg-2">server路径</label>
-                                        <div class="col-lg-10">
-                                            <input class=" form-control" id="server_path" name="server_path" type="text" placeholder="path "/>
-                                        </div>
-                                    </div>
-
+                                   
+                                    <input type="text" value="" name="ip" class="hide" id="war_ip_1">
+                                    <input type="text" value="" name="port" class="hide" id="war_port_1">
                                     <div class="form-group">
                                         <div class="col-lg-offset-2 col-lg-10">
                                             <button class="btn btn-primary" type="submit">部署</button>
@@ -341,7 +334,7 @@
                 </div>
             </div>
             </div>
-
+            <iframe id="id_iframe" name="id_iframe" style="display:none;"></iframe> 
             <!-- Modal -->
                                     <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
                                         <div class="modal-dialog">
@@ -366,7 +359,7 @@
         <!--body wrapper end-->
         <!--footer section start-->
         <footer>
-            2015 &copy; Spider by 1301
+            Copyright ©2014-2015 Mti1301 lab in xidian university.  All Rights Reserved
         </footer>
         <!--footer section end-->
 

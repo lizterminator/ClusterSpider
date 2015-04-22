@@ -13,6 +13,14 @@ var cur_inter;
 	var startMachineUrl = "http://192.168.2.133:8080/startup.do";
 	var shutdownUrl = "http://192.168.2.133:8080/shutdown.do";
 	// Toggle Left Menu
+	// 
+	// 
+	var serviceStartUrl = "http://192.168.2.133:8080/start.do";
+	var serviceStopUrl = "http://192.168.2.133:8080/stop.do";
+	var serviceReloadUrl = "http://192.168.2.133:8080/reload.do";
+	var serviceUndeployUrl = "http://192.168.2.133:8080/undeploy.do";
+	var serviceDeployUrl = "http://192.168.2.133:8080/deploy.do";
+
 	var bindToggle = function() {
 		/*jQuery('.menu-list > a').click(function() {
       
@@ -38,6 +46,28 @@ var cur_inter;
 	   });*/
 	}
 
+
+	/*$('#remoteDeploy').click(function(){
+		var file = $('#war_pac')[0].files[0];
+		console.log($('#war_pac')[0]);
+		var ip = store.getItem('machine_ip');
+		var port = store.getItem('machine_port');
+		$.ajax({
+			type: 'POST',
+			url: serviceDeployUrl,
+			dataType: 'json',
+			contentType: 'multipart/form-data',
+			data:{
+				war: file,
+				ip: ip,
+				port: port
+			},
+			success: function(data){
+				$('.modal-body').text(data.msg);
+				$('#myModal').modal();
+			}
+		})
+	});*/
 
 	function visibleSubMenuClose() {
 		jQuery('.menu-list').each(function() {
@@ -67,7 +97,7 @@ var cur_inter;
 			all += '<ul class="sub-menu-list" id="' + data[i].name + '">';
 			for (var j = 0; j < machines.length; j++) {
 				var textClass = machines[j].live ? "text-success" : "text-danger";
-				all += '<li ><a href="#' +  '" id="' + machines[j].ip + '-' + machines[j].port + '"><span '+' class="' + textClass +'">' + machines[j].name + "   " + machines[j].ip + '</span></a></li>'
+				all += '<li ><a href="#' + '" id="' + machines[j].ip + '-' + machines[j].port + '"><span ' + ' class="' + textClass + '">' + machines[j].name + "   " + machines[j].ip + '</span></a></li>'
 			};
 
 			all += '</ul></li>';
@@ -103,16 +133,38 @@ var cur_inter;
 
 		var machines = findCluster('webcluster').machines;
 		for (var i = 0; i < machines.length; i++) {
-			var live = machines[i].live ? '开启' : '关闭';
-			html += '<div class="row"><div class="col-md-4">' + machines[i].name + '</div><div class="col-md-4">' + machines[i].ip + '</div><div class="col-md-4">' + '<input id="' + machines[i].ip + '%' + machines[i].port + '" type="checkbox" ' + (machines[i].live ? 'checked' : '') + ' data-toggle="toggle" data-onstyle="success">' + '</div></div><br/>';
+			var live = "";
+			var spanClass = "";
+			if (machines[i].live) {
+				live = '已开启';
+				spanClass = "label label-success";
+			} else {
+				live = '已关闭';
+				spanClass = "label label-danger";
+			}
+			html += '<div class="row"><div class="col-md-4">' +
+				machines[i].name + '</div><div class="col-md-4">' +
+				machines[i].ip + '</div><div class="col-md-4">' +
+				'<span id="' + machines[i].ip + '%' + machines[i].port + '" class="' + spanClass + '">' + live + '</span></div></div><br/>';
 		};
 		$('#webclusterDetile').append(html);
 		html = '';
 
 		machines = findCluster('appcluster').machines;
 		for (var i = 0; i < machines.length; i++) {
-			var live = machines[i].live ? '开启' : '关闭';
-			html += '<div class="row"><div class="col-md-4">' + machines[i].name + '</div><div class="col-md-4">' + machines[i].ip + '</div><div class="col-md-4">' + '<input id="' + machines[i].ip + '%' + machines[i].port + '" type="checkbox" ' + (machines[i].live ? 'checked' : '') + ' data-toggle="toggle" data-onstyle="success">' + '</div></div><br/>';
+			var live = "";
+			var spanClass = "";
+			if (machines[i].live) {
+				live = '已开启';
+				spanClass = "label label-success";
+			} else {
+				live = '已关闭';
+				spanClass = "label label-danger";
+			}
+			html += '<div class="row"><div class="col-md-4">' +
+				machines[i].name + '</div><div class="col-md-4">' +
+				machines[i].ip + '</div><div class="col-md-4">' +
+				'<span id="' + machines[i].ip + '%' + machines[i].port + '" class="' + spanClass + '">' + live + '</span></div></div><br/>';
 		};
 		$('#appclusterDetile').append(html);
 
@@ -171,7 +223,9 @@ var cur_inter;
 				updataMachine(data);
 			},
 			error: function(data) {
-				console.log(data);
+				$('#physics').empty();
+				$("#serviceDetile").empty();
+				$('#jvm').empty();
 			}
 		});
 	}
@@ -179,21 +233,35 @@ var cur_inter;
 	function updataMachine(data) {
 		$('#physics').empty();
 		$("#serviceDetile").empty();
+		$('#jvm').empty();
 		var html = '';
 		if (!data.live) {
-			$('#startMachine').addClass('btn-success');
+			$('#startMachine').removeClass('btn-success');
+			$('#startMachine').text("已关闭");
 			return;
 		}
-		$('#startMachine').removeClass('btn-success');
+		$('#startMachine').addClass('btn-success');
+		$('#startMachine').text("已开启");
+
+		/*************物理信息*********/
 		for (var i in data.osinfo) {
 
-			html += '<li><div class="title">' + i + '</div><div class="desk">' + data.osinfo[i] + '</div></li>'
+			html += '<li><div class="title">' + i + '</div><div class="text-success">' + data.osinfo[i] + '</div></li>'
 
 		}
 		$('#physics').append(html);
 
+		/****************JVM信息**********/
+		html = '';
+		for (var i in data.jvminfo) {
+
+			html += '<li><div class="title">' + i + '</div><div class="text-success">' + data.jvminfo[i] + '</div></li>'
+
+		}
+		$('#jvm').append(html);
 
 
+		/***************服务信息*****************/
 		html = '';
 
 		for (var i = 0; i < data.serviceinfo.length; i++) {
@@ -201,7 +269,7 @@ var cur_inter;
 			var btnClass = "";
 			var btn_info = "";
 			var status_info = "";
-			if (service.status) {
+			if (service.live) {
 				btnClass = "";
 				btn_info = "关闭";
 				status_info = "已开启"
@@ -211,67 +279,124 @@ var cur_inter;
 				status_info = "已关闭"
 			}
 
-			html += '<div class="row">' + '<div class="col-md-2">' + service.name + '</div>' + '<div class="col-md-2">' + status_info + '</div>' + '<div class="col-md-2">' + service.count + '</div>' + '<div class="col-md-2"><button id="' + (service.name + 'Toggle') + '" class="btn btn-default ' + btnClass + '">' + btn_info + '</button></div>' + ' <div class="col-md-2"><input id="' + service.name + 'Reload" type="button" class="btn btn-default btn-warning" value="reload"></div>' + '<div class="col-md-2"><input id="' + service.name + 'Undeploy" type="button" class="btn btn-default btn-danger" value="undeploy"></div>' + '</div><br/>';
-
-
+			html += '<div class="row">' + '<div class="col-md-2">' + service.name + '</div>' + '<div class="col-md-2">' + status_info + '</div>' + '<div class="col-md-2">' + service.count + '</div>' + '<div class="col-md-2"><button id="' + (service.name + '_Toggle') + '" class="btn btn-default serviceToggle ' + btnClass + '">' + btn_info + '</button></div>' + ' <div class="col-md-2"><input id="' + service.name + '_Reload" type="button" class="btn btn-default btn-warning reload" value="reload"></div>' + '<div class="col-md-2"><input id="' + service.name + '_Undeploy" type="button" class="btn btn-default btn-danger undeploy" value="undeploy"></div>' + '</div><br/>';
 
 		}
 		$("#serviceDetile").append(html);
-	}
 
-	function openMachine(){
-		var ip = store.getItem('machine_ip');
+
+		/****bind event*****/
+		$('button.serviceToggle,input.reload,input.undeploy').click(function() {
+			var path = "/" + this.id.split('_')[0];
+			var ip = store.getItem('machine_ip');
 			var port = store.getItem('machine_port');
+
 			var url;
-			var type;
-			
-			if ($(this).hasClass('btn-success')) {
-				url = startMachineUrl;
-				type = "start";
-			} else {
-				url = shutdownUrl;
-				type = "shutdown";
+			var action = this.id.split('_')[1];
+
+			if (action == "Toggle") {
+				if (!$(this).hasClass('btn-success')) {
+					url = serviceStopUrl;
+				} else {
+					url = serviceStartUrl;
+				}
+			} else if (action == "Reload") {
+				url = serviceReloadUrl;
+			} else if (action == "Undeploy") {
+				var r = confirm("卸载将永久删除服务器上的War包，确定要卸载吗？");
+				if (r == true) {
+					url = serviceUndeployUrl;
+				} else {
+					return;
+				}
+
 			}
+
 			$.ajax({
 				type: 'GET',
 				url: url,
 				dataType: 'json',
 				data: {
 					ip: ip,
-					port: port
+					port: port,
+					path: path
 				},
-				// async: false,
 				success: function(data) {
 					$('.modal-body').text(data.msg);
 					$('#myModal').modal();
-					if(data.success){
-						// change the nav styles...
-						var p = document.getElementById(ip+'-'+port);
-						var c = p.firstElementChild;
-						if(type==="start"){
-							$(c).removeClass('text-danger');
-							$(c).addClass('text-success');
-							var btn = document.getElementById(ip+'%'+port);
-							$(btn).bootstrapToggle('on');
-						}
-						else{
-							$(c).removeClass('text-success');
-							$(c).addClass('text-danger');
-							var btn = document.getElementById(ip+'%'+port);
-							$(btn).bootstrapToggle('off');
-						}
-					}
-				},
-				error: function(data) {
-					console.log(data);
 				}
 			});
+		});
+	}
+
+	function toggleMachine(e) {
+		if (e.type === "click") {
+			var ip = store.getItem('machine_ip');
+			var port = store.getItem('machine_port');
+		} else {
+			var ip = this.id.split('%')[0];
+			var port = this.id.split('%')[1];
+		}
+
+		var url;
+		var type;
+
+		if (!$(this).hasClass('btn-success')) {
+			url = startMachineUrl;
+
+			type = "start";
+		} else {
+
+			url = shutdownUrl;
+
+			type = "shutdown";
+		}
+		$.ajax({
+			type: 'GET',
+			url: url,
+			dataType: 'json',
+			data: {
+				ip: ip,
+				port: port
+			},
+			// async: false,
+			success: function(data) {
+				$('.modal-body').text(data.msg);
+				$('#myModal').modal();
+				if (data.success) {
+					// change the nav styles...
+					var p = document.getElementById(ip + '-' + port);
+					var c = p.firstElementChild;
+					if (type === "start") {
+						$(c).removeClass('text-danger');
+						$(c).addClass('text-success');
+						var btn = document.getElementById(ip + '%' + port);
+						$(btn).removeClass('label-danger');
+						$(btn).addClass('label-success');
+						$(btn).text('已开启');
+						//$(btn).bootstrapToggle('on');
+					} else {
+						$(c).removeClass('text-success');
+						$(c).addClass('text-danger');
+						var btn = document.getElementById(ip + '%' + port);
+						$(btn).removeClass('label-success');
+						$(btn).addClass('label-danger');
+						$(btn).text('已关闭');
+						//$(btn).bootstrapToggle('off');
+					}
+				}
+			},
+			error: function(data) {
+				console.log(data);
+			}
+		});
+
 	}
 
 	function bindX() {
 
-		$('#startMachine').click(openMachine);
-
+		$('#startMachine').click(toggleMachine);
+		//$('input[data-toggle="toggle"]').change(toggleMachine);
 		$('.menu-list > a').click(function(e) {
 
 			var clusterName = $(this).parent().find('ul')[0].id;
@@ -339,6 +464,12 @@ var cur_inter;
 			if (cur_inter) {
 				clearInterval(cur_inter);
 			}
+
+			$('#war_ip').val(machineIP);
+			$('#war_port').val(port);
+
+			$('#war_ip_1').val(machineIP);
+			$('#war_port_1').val(port);
 			requestMachineDetile();
 			cur_inter = setInterval(requestMachineDetile, 2000);
 			//createMachineDetile(machine);

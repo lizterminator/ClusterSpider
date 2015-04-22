@@ -17,7 +17,7 @@
 
 
     // Toggle Left Menu
-   jQuery('.menu-list > a').click(function() {
+  /* jQuery('.menu-list > a').click(function() {
       
       var parent = jQuery(this).parent();
       var sub = parent.find('> ul');
@@ -39,7 +39,7 @@
       }
       return false;
    });
-
+*/
    function visibleSubMenuClose() {
       jQuery('.menu-list').each(function() {
          var t = jQuery(this);
@@ -148,7 +148,7 @@
         return false;
     });
 
-    $("#sortable-todo").sortable();
+    //$("#sortable-todo").sortable();
 
 
     // panel close
