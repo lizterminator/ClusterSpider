@@ -38,6 +38,10 @@ a:focus, a:active, a:hover {
 h1, h2, h3, h4, h5 {
     font-family: 'Open Sans', sans-serif;
 }
+.navActive {
+    background-color: #353F4F;
+    text-decoration: none;
+}
 
 .mtop10 {
     margin-top: 10px;
@@ -368,7 +372,8 @@ hr {
     display: none;
     margin: 0;
     padding: 0;
-    background: #353f4f;
+    background: lightgoldenrodyellow;
+    /*background: #353f4f;*/
 }
 
 .custom-nav .sub-menu-list > li > a {

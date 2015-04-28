@@ -29,8 +29,8 @@
             <!-- <img src="images/login-logo.png" alt=""/> -->
         </div>
         <div class="login-wrap">
-            <input type="text" class="form-control" placeholder="用户名" autofocus>
-            <input type="password" class="form-control" placeholder="密码">
+            <input type="text" class="form-control" id="username" placeholder="用户名" autofocus>
+            <input type="password" class="form-control" id="password" placeholder="密码">
 
             <button class="btn btn-lg btn-login btn-block" id="submit" type="submit">
                 <i class="fa fa-check"></i>
@@ -87,8 +87,15 @@
 <script src="js/bootstrap.min.js"></script>
 <script src="js/modernizr.min.js"></script>
 <script type="text/javascript">
+    var store = localStorage;
+
     $('#submit').click(function(){
-        window.location.href = "index.html";
+
+        if($('#username').val() === 'admin' && $('#password').val() === 'admin'){
+           
+            store.setItem('username','admin');
+            window.location.href = "index.html";
+        }
     });
 </script>
 </body>

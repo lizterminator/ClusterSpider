@@ -121,13 +121,9 @@
         <!--body wrapper start-->
         <div class="wrapper">
 
-          <!-- <ul class="nav nav-pills nav-justified">
-            <li ><a href="#">Home</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Messges</a></li>
-          </ul> -->
+         
 
-            <div class="row" id="webclusterStatus">
+            <div class="row hide" id="webclusterStatus">
               <div class="col-md-12">
                     <section class="panel panel-primary">
                         <header class="panel-heading">
@@ -141,9 +137,9 @@
                             <div>
                                 <div id="webclusterDetile" style="width: 100%; text-align: center; margin:0 auto;">
                                     <div class="row">
-                                      <div class="col-md-4 col-sm-4 col-xs-4">功能</div>
-                                      <div class="col-md-4 col-sm-4 col-xs-4">主机名/IP</div>
-                                      <div class="col-md-4 col-sm-4 col-xs-4">状态</div>
+                                      <div class="col-md-4">功能</div>
+                                      <div class="col-md-4">主机名/IP</div>
+                                      <div class="col-md-4">状态</div>
                                       <!-- <div class="col-md-3">开关</div> -->
                                     </div>
                                     <hr>
@@ -181,21 +177,9 @@
             </div>
             <div id="machine" class="hide">
               
-              <ul id="machine_tabs" class="nav nav-pills nav-justified">
-                <li><a class="text-danger navActive" id="pyinfo_tab" href="#">物理信息监控</a></li>
-                <li><a class="text-danger" id="seinfo_tab" href="#">服务信息监控</a></li>
-                <li><a class="text-danger" id="sedeploy_tab" href="#">服务部署</a></li>
-              </ul>
-
-              <ul id="machine_tabs_" class="nav nav-pills nav-justified hide">
-                <li><a class="text-danger navActive" id="pyinfo_tab_" href="#">物理信息监控</a></li>
-                <li><a class="text-danger" id="seinfo_tab_" href="#">服务信息监控</a></li>
-              </ul>
-
-
-              <hr>
-            <div class="row " id="pyinfo">
-                <div class="col-md-12">
+            
+            <div class="row" >
+                <div class="col-md-6">
                     <section class="panel panel-primary">
                         <header class="panel-heading">
                             物理信息监控：
@@ -206,10 +190,10 @@
                         </header>
                         <div class="panel-body">
                             <div >
-                                <div id="" style="width: 100%; height: 400px;margin:0 auto;">
+                                <div id="" style="width: 100%; margin:0 auto;">
                                 <div class="row">
                                   <!-- <div class="col-md-6 col-md-offset-2"> -->
-                                    <ul class="p-info col-lg-4 text-right">
+                                    <ul class="p-info col-lg-4">
                                         <li >
                                             <div class="title">开启</div>
                                             <div class="desk"><button id="startMachine" class="btn btn-default" >正在载入...</button></div>
@@ -233,7 +217,7 @@
                                          </div>
 
                                     </ul>
-                                    <ul class="p-info col-lg-8 text-right hide" id="jvm_area">
+                                    <ul class="p-info col-lg-8">
                                       <li>
                                         <div class="title">JVM信息</div>
                                       </li>
@@ -249,9 +233,7 @@
                         </div>
                     </section>
                 </div>
-                </div>
-                <div class="row hide" id="seinfo">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <section class="panel panel-primary">
                         <header class="panel-heading">
                             服务信息监控：
@@ -262,15 +244,15 @@
                         </header>
                         <div class="panel-body">
                             <div >
-                                <div style="width: 100%; height: 400px;text-align: center; margin:0 auto;">
+                                <div style="width: 100%; text-align: center; margin:0 auto;">
                                   <div class="row">
-                                      <div class="col-md-2 col-sm-4 col-xs-4">服务</div>
-                                      <div class="col-md-2 col-sm-4 col-xs-4">状态</div>
-                                      <div class="col-md-2 col-sm-4 col-xs-4">请求次数</div>
-                                      <div class="col-md-2 col-sm-4 col-xs-4">开关</div>
-                                      <div class="col-md-4 col-sm-8 col-xs-8">操作</div>
-                                      <!-- <div class="col-md-1 col-sm-2 col-xs-2">卸载</div>
-                                      <div class="col-md-1 col-sm-2 col-xs-2">配置</div> -->
+                                      <div class="col-md-2">服务</div>
+                                      <div class="col-md-2">状态</div>
+                                      <div class="col-md-2">请求次数</div>
+                                      <div class="col-md-2">开关</div>
+                                      <div class="col-md-2">重新加载</div>
+                                      <div class="col-md-2">卸载</div>
+                                      
                                   </div>
                                   <hr>
                                   <div id="serviceDetile">
@@ -283,7 +265,7 @@
                     </section>
                 </div>
             </div>
-            <div class="row hide" id="sedeploy">
+            <div class="row " >
               <div class="col-md-6">
                     <section class="panel panel-primary">
                         <header class="panel-heading">
@@ -367,43 +349,18 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                                                    <h4 class="modal-title">提示</h4>
+                                                    <h4 class="modal-title">小提示</h4>
                                                 </div>
-                                                <div id="#modal-body" class="modal-body">
+                                                <div class="modal-body">
 
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <!-- modal -->
-
-
-                                     <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="policySelector" class="modal fade">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                                                    <h4 class="modal-title">选择负载均衡策略</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                  <label for="balancePolicy">选项：</label>
-                                                    <select id="balancePolicy">
-                                                      <option value="0">adaptive</option>
-                                                      <option value="1">ordered</option>
-                                                      <option value="2">random</option>
-                                                      <option value="3">roundRobin</option>
-                                                    </select>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" id="policySelectorBtn" class="btn btn-success" data-dismiss="modal">确定</button>
-                                                     <button type="button" class="btn btn-default" data-dismiss="modal"> 关闭</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
 
 
         </div>

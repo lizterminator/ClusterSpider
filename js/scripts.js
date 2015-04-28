@@ -17,7 +17,7 @@
 
 
     // Toggle Left Menu
-  /* jQuery('.menu-list > a').click(function() {
+   /*jQuery('.menu-list > a').click(function() {
       
       var parent = jQuery(this).parent();
       var sub = parent.find('> ul');
@@ -38,8 +38,8 @@
          }
       }
       return false;
-   });
-*/
+   });*/
+
    function visibleSubMenuClose() {
       jQuery('.menu-list').each(function() {
          var t = jQuery(this);
@@ -59,12 +59,12 @@
    }
 
    //  class add mouse hover
-   jQuery('.custom-nav > li').hover(function(){
+   /*jQuery('.custom-nav > li').hover(function(){
       jQuery(this).addClass('nav-hover');
    }, function(){
       jQuery(this).removeClass('nav-hover');
    });
-
+*/
 
    // Menu Toggle
    jQuery('.toggle-btn').click(function(){
